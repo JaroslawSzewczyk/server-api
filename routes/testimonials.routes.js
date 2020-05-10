@@ -36,7 +36,7 @@ router.route('/testimonials/:id').put((req, res) => {
       }
     }
   })
-  res.json(db.testimonials);
+  res.json({ message: "ok" });
 });
 
 router.route('/testimonials/:id').delete((req, res) => {
