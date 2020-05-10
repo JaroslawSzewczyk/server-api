@@ -25,13 +25,18 @@ router.route('/seats').post((req, res) => {
 });
 
 router.route('/seats/:id').put((req, res) => {
-  db.seats[req.params.id - 1] = {
-    id: req.params.id++,
-    day: req.body.day,
-    seat: req.body.seat,
-    client: req.body.client,
-    email: req.body.email,
-  }
+  db.seats.map(item => {
+    if (item.id == req.params.id) { 
+      let index = db.seats.indexOf(item);
+      db.seats[index] = {
+        id: req.params.id,
+        day: req.body.day,
+        seat: req.body.seat,
+        client: req.body.client,
+        email: req.body.email,
+      }
+    }
+  })
   res.json({ message: "ok" });
 });
 

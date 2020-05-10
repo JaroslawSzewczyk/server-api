@@ -1,10 +1,12 @@
 const express = require('express');
 const testimonials = require('./routes/testimonials.routes');
+const cors = require('cors')
 const concerts = require('./routes/concerts.routes');
 const seats = require('./routes/seats.routes');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

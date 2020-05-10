@@ -26,12 +26,17 @@ router.route('/testimonials').post((req, res) => {
 });
 
 router.route('/testimonials/:id').put((req, res) => {
-  db.testimonials[req.params.id - 1] = {
-    id: req.params.id++,
-    author: req.body.author,
-    text: req.body.text,
-  }
-  res.json({ message: "ok" });
+  db.testimonials.map(item => {
+    if (item.id == req.params.id) {
+      let index = db.testimonials.indexOf(item);
+      db.testimonials[index] = {
+        id: req.params.id,
+        author: req.body.author,
+        text: req.body.text,
+      }
+    }
+  })
+  res.json(db.testimonials);
 });
 
 router.route('/testimonials/:id').delete((req, res) => {
