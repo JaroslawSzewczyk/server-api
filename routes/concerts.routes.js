@@ -1,0 +1,45 @@
+const express = require('express');
+const router = express.Router();
+const uuid = require('uuid');
+const db = require('../db')
+
+const app = express();
+
+router.route('/concerts').get((req, res) => {
+  res.json(db.concerts);
+})
+
+router.route('/concerts/:id').get((req, res) => {
+  res.json(db.concerts[req.params.id - 1]);
+});
+
+router.route('/concerts').post((req, res) => {
+  db.concerts.push({
+    id: uuid.v4(),
+    performer: req.body.performer,
+    genre: req.body.genre,
+    price: req.body.price,
+    day: req.body.day,
+    image: req.body.image,
+  });
+  res.json({ message: "ok" });
+});
+
+router.route('/concerts/:id').put((req, res) => {
+  db.concerts[req.params.id - 1] = {
+    id: req.params.id++,
+    performer: req.body.performer,
+    genre: req.body.genre,
+    price: req.body.price,
+    day: req.body.day,
+    image: req.body.image,
+  }
+  res.json({ message: "ok" });
+});
+
+router.route('/concerts/:id').delete((req, res) => {
+  db.concerts.splice(req.params.id, 1);
+  res.json({ message: "ok" });
+});
+
+module.exports = router;
