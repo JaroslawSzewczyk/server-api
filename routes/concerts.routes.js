@@ -26,24 +26,20 @@ router.route('/concerts').post((req, res) => {
 });
 
 router.route('/concerts/:id').put((req, res) => {
-  
-  db.concerts.map(item => { 
-    
+  db.concerts = db.concerts.map(item => {
     if (item.id == req.params.id) {
-      
-      let index = db.concerts.indexOf(item);
-  
-      db.concerts[index] = {
+      return {
         id: req.params.id,
         performer: req.body.performer,
         genre: req.body.genre,
         price: req.body.price,
         day: req.body.day,
         image: req.body.image,
-      }
-      console.log(item)
-    }
-  })  
+      };
+    } else {
+      return item;
+    };
+  });
  
   res.json({ message: "ok" });
 });

@@ -25,18 +25,19 @@ router.route('/seats').post((req, res) => {
 });
 
 router.route('/seats/:id').put((req, res) => {
-  db.seats.map(item => {
-    if (item.id == req.params.id) { 
-      let index = db.seats.indexOf(item);
-      db.seats[index] = {
+  db.seats = db.seats.map(item => {
+    if (item.id == req.params.id) {
+      return {
         id: req.params.id,
         day: req.body.day,
         seat: req.body.seat,
         client: req.body.client,
         email: req.body.email,
-      }
-    }
-  })
+      };
+    } else {
+      return item;
+    };
+  });
   res.json({ message: "ok" });
 });
 

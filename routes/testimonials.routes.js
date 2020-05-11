@@ -26,15 +26,16 @@ router.route('/testimonials').post((req, res) => {
 });
 
 router.route('/testimonials/:id').put((req, res) => {
-  db.testimonials.map(item => {
+  db.testimonials = db.testimonials.map(item => {
     if (item.id == req.params.id) {
-      let index = db.testimonials.indexOf(item);
-      db.testimonials[index] = {
+      return {
         id: req.params.id,
         author: req.body.author,
         text: req.body.text,
-      }
-    }
+      };
+    } else {
+      return item;
+    };
   })
   res.json({ message: "ok" });
 });
