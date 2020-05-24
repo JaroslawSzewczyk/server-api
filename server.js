@@ -5,6 +5,7 @@ const concerts = require('./routes/concerts.routes');
 const seats = require('./routes/seats.routes');
 const path = require('path');
 const socket = require('socket.io');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -29,8 +30,16 @@ app.get('*', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({message: '404 not found...'});
-})
+  res.status(404).json({ message: '404 not found...' });
+});
+
+mongoose.connect('mongodb://localhost:27017/NewWaveDB', { useNewUrlParser: true });
+const db = mongoose.connection;
+
+db.once('open', () => {
+  console.log('Connected to the database');
+});
+db.on('error', err => console.log('Error ' + err));
 
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running on port: 8000');

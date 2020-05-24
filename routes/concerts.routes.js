@@ -1,52 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
-const db = require('../db')
+const ConcertController = require('../controllers/concerts.controller');
 
 const app = express();
 
-router.route('/concerts').get((req, res) => {
-  res.json(db.concerts);
-})
+router.route('/concerts').get(ConcertController.getConcerts);
 
-router.route('/concerts/:id').get((req, res) => {
-  res.json(db.concerts[req.params.id - 1]);
-});
+router.route('/concerts/:id').get(ConcertController.getId);
 
-router.route('/concerts').post((req, res) => {
-  db.concerts.push({
-    id: uuid.v4(),
-    performer: req.body.performer,
-    genre: req.body.genre,
-    price: req.body.price,
-    day: req.body.day,
-    image: req.body.image,
-  });
-  res.json({ message: "ok" });
-});
+router.route('/concerts').post(ConcertController.newConcert);
 
-router.route('/concerts/:id').put((req, res) => {
-  db.concerts = db.concerts.map(item => {
-    if (item.id == req.params.id) {
-      return {
-        id: req.params.id,
-        performer: req.body.performer,
-        genre: req.body.genre,
-        price: req.body.price,
-        day: req.body.day,
-        image: req.body.image,
-      };
-    } else {
-      return item;
-    };
-  });
- 
-  res.json({ message: "ok" });
-});
+router.route('/concerts/:id').put(ConcertController.updateConcert);
 
-router.route('/concerts/:id').delete((req, res) => {
-  db.concerts.splice(req.params.id, 1);
-  res.json({ message: "ok" });
-});
+router.route('/concerts/:id').delete(ConcertController.delateConcert);
 
 module.exports = router;
