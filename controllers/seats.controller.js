@@ -2,7 +2,9 @@ const Seat = require('../models/seats.model');
 
 exports.getSeats = async (req, res) => {
   try {
-    res.json(await Seat.find())
+    const ticket = await Seat.find();
+    res.json(ticket);
+    console.log(ticket.length);
   } catch (err) {
     res.status(500).json({ message: err });
   }

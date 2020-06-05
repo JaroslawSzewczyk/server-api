@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { getConcerts, getRequest, loadConcertsRequest } from '../../../redux/concertsRedux';
+import { loadSeatsRequest, getSeats } from '../../../redux/seatsRedux';
 import Lineup from './Lineup';
 
 const mapStateToProps = state => ({

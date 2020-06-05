@@ -3,6 +3,7 @@ const testimonials = require('./routes/testimonials.routes');
 const cors = require('cors')
 const concerts = require('./routes/concerts.routes');
 const seats = require('./routes/seats.routes');
+const searchConcert = require('./routes/searchConcert.routers');
 const path = require('path');
 const socket = require('socket.io');
 const mongoose = require('mongoose');
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/concerts', searchConcert);
 app.use('/api', testimonials);
 app.use('/api', concerts);
 app.use('/api', seats);
@@ -33,7 +35,11 @@ app.use((req, res) => {
   res.status(404).json({ message: '404 not found...' });
 });
 
-mongoose.connect('mongodb+srv://Jarek:Gitara21@cluster0-kvble.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewUrlParser: true });
+// mongoose.connect('mongodb+srv://Jarek:Gitara21@cluster0-kvble.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewUrlParser: true });
+// const db = mongoose.connection;
+
+const dbURI = process.env.NODE_ENV === 'production' ? 'mongodb+srv://Jarek:Gitara21@cluster0-kvble.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority' : 'mongodb://localhost:27017/NewWaveDB';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.once('open', () => {
@@ -51,4 +57,4 @@ io.on('connection', (socket) => {
   console.log('New socket!');
 });
 
-
+module.exports = server;
