@@ -27,7 +27,7 @@ describe('GET /concerts/performer/:performer', () => {
     expect(performer.body).to.not.be.null;
   });
 
-  await(async () => {
+  (async () => {
     await Concerts.deleteMany();
   });
 });
