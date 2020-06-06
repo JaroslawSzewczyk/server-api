@@ -1,4 +1,5 @@
 const Seat = require('../models/seats.model');
+const sanitize = require('mongo-sanitize');
 
 exports.getSeats = async (req, res) => {
   try {
@@ -32,7 +33,12 @@ exports.newSeat = async (req, res) => {
     if (checkSeat) {
       return res.status(404).json({ message: '404 The slot is already taken...' });
     } else {
-      const newSeat = new Seat({ day: day, seat: seat, client: client, email: email });
+      const newDay = sanitize(day);
+      const seatNumber = sanitize(seat);
+      const newClient = sanitize(client);
+      const newEmail = sanitize(email);
+      
+      const newSeat = new Seat({ day: newDay, seat: seatNumber, client: newClient, email: newEmail });
       await newSeat.save();
     }
   } catch (err) {
